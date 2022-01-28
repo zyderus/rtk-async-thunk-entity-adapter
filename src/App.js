@@ -1,25 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from 'react'
+import './App.css'
+
+const users = [
+  { id: '1', name: 'Rustam' },
+  { id: '2', name: 'Elizabeth' },
+  { id: '3', name: 'Victoria' },
+]
 
 function App() {
+  const [allUsers, setAllUsers] = useState(users)
+  const [filteredData, setFilteredData] = useState(allUsers)
+
+  const handleSearch = e => {
+    let value = e.target.value.toLowerCase()
+    let result = []
+
+    result = allUsers.filter(user => user.name.toLowerCase().includes(value))
+    setFilteredData(result)
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='App'>
+      <label>Search:</label>
+      <input type='text' onChange={handleSearch} />
+      <ul>
+        {filteredData.map(user => (
+          <li key={user.id}>{user.name}</li>
+        ))}
+      </ul>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
