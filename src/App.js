@@ -1,30 +1,43 @@
-import { useState } from 'react'
 import './App.css'
-
-const users = [
-  { id: '1', name: 'Rustam' },
-  { id: '2', name: 'Elizabeth' },
-  { id: '3', name: 'Victoria' },
-]
+import { useSelector, useDispatch } from 'react-redux'
+import { actions, selectors } from './redux/userSlice'
 
 function App() {
-  const [allUsers, setAllUsers] = useState(users)
-  const [filteredData, setFilteredData] = useState(allUsers)
+  const dispatch = useDispatch()
+  const userId = useSelector(state => state.user.userId)
+  const user = useSelector(state => state.user.user)
+  const comments = useSelector(selectors.selectAll)
 
-  const handleSearch = e => {
-    let value = e.target.value.toLowerCase()
-    let result = []
+  const handleAddComment = () => {
+    const comment = {
+      postId: 5,
+      id: 312,
+      name: ' dfklsdjkls djkl sjdjklsdjksdjkfsdhshdh sdf',
+      email: 'bla@marques.me',
+      body: 'dsadfasdicabo\ncommodi odio ratione nesciunt\nvoluptate doloremque est\nnam autem error delectus',
+    }
 
-    result = allUsers.filter(user => user.name.toLowerCase().includes(value))
-    setFilteredData(result)
+    dispatch(actions.addComment(comment))
+  }
+
+  const handleGetUserAndComments = () => {
+    dispatch(actions.getUserAndComments())
   }
 
   return (
     <div className='App'>
-      <label>Search:</label>
-      <input type='text' onChange={handleSearch} />
+      {console.log('userId:', userId)}
+      {console.log('user:', user)}
+      {console.log('comments:', comments)}
+
+      <h1>Hey ninja</h1>
+
+      <button onClick={handleAddComment}>add comment</button>
+      <br />
+      <button onClick={handleGetUserAndComments}> get user and comments </button>
+      <h3>List</h3>
       <ul>
-        {filteredData.map(user => (
+        {comments.map(user => (
           <li key={user.id}>{user.name}</li>
         ))}
       </ul>
